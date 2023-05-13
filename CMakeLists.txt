@@ -24,7 +24,7 @@ endif()
 # to the absolute path to the directory containing OpenCVConfig.cmake file
 # via the command line or GUI
 if(WIN32)
-    set(OpenCV_DIR "D:/_Program Files/opencv/build/x64/vc15/lib")
+    set(OpenCV_DIR "C:/opencv/build/x64/vc15/lib")
 endif()
 if(APPLE)
     set(OpenCV_DIR "/opt/homebrew/Cellar/opencv/4.7.0_2/include/opencv4")

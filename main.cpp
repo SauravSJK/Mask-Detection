@@ -6,8 +6,9 @@
 //      Separate functions to different files
 //		Implement the rest of the mask detection methods
 //      Try other pre-processing steps to improve detection
-//      Update program to read multiple random images
-//      Suppress display function calls
+//      Update program to read multiple random images or Implement a GUI to select images or use video inputs
+//      Suppress display function calls or display images in parallel
+//
 
 // Import the necessary libraries for opencv and i/o
 #include <iostream>
@@ -47,15 +48,15 @@ void display(const string& WINNAME, const Mat& IMG, const int SCALE = 1) {
 //         winname: A window name for displaying the image
 // Pre-condition:   The program expects the path to point to a valid jpg image and the winname to be a string
 // Post-condition:  The image is displayed in a window with the window name same as the filename and the image is returned
-Mat readDisplay(const string &path, const string& winname) {
-	Mat img = imread(path);
+Mat readDisplay(const string &PATH, const string& WINNAME) {
+	Mat img = imread(PATH);
 	// If the image is empty, exit the program
 	if (img.empty()) {
 		cout << "Invalid path" << endl;
 		exit(0);
 	}
 
-	display(winname, img);
+	display(WINNAME, img);
 
 	return img;
 }
@@ -94,11 +95,11 @@ void preProcessing (map<string, Mat> &images) {
 // Pre-condition: The map variable should contain valid jpg images with the expected keys and the filename should point to the correct cascade xml file
 // Post-condition: The faces detected in the image are first displayed and then returned to the main function as a vector of matrices
 // Future improvements: Include cropped images in the map
-vector<Mat> faceDetection (map<string, Mat> &images, const String& cascade_filename) {
+vector<Mat> faceDetection (map<string, Mat> &images, const String& CASCADE_FILENAME) {
 	// Loading the face cascades
 	cout << "Loading the face cascades" << endl;
 	CascadeClassifier face_cascade;
-	if(!face_cascade.load(cascade_filename)) {
+	if(!face_cascade.load(CASCADE_FILENAME)) {
 		cout << "Error loading face cascade\n";
 		exit(0);
 	};
