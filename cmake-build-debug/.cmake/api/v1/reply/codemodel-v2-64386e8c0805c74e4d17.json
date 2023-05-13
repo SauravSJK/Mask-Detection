@@ -1,0 +1,60 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.17"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "main",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "Mask-Detection::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Mask-Detection-Debug-b195ae8980116f435100.json",
+					"name" : "Mask-Detection",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/Users/sauravsjk/Documents/UW Bothell/Course Work/CSS 587 - Advanced Topics In Computer Vision/Project/Mask-Detection/cmake-build-debug",
+		"source" : "/Users/sauravsjk/Documents/UW Bothell/Course Work/CSS 587 - Advanced Topics In Computer Vision/Project/Mask-Detection"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 4
+	}
+}

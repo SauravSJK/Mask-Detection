@@ -1,0 +1,3 @@
+/Users/sauravsjk/Documents/UW Bothell/Course Work/CSS 587 - Advanced Topics In Computer Vision/Project/Mask-Detection/cmake-build-debug/CMakeFiles/Mask-Detection.dir
+/Users/sauravsjk/Documents/UW Bothell/Course Work/CSS 587 - Advanced Topics In Computer Vision/Project/Mask-Detection/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/sauravsjk/Documents/UW Bothell/Course Work/CSS 587 - Advanced Topics In Computer Vision/Project/Mask-Detection/cmake-build-debug/CMakeFiles/rebuild_cache.dir
