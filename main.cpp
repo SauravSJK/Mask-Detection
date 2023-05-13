@@ -135,7 +135,7 @@ int main()
 	map<string, Mat> images;
 	// Reading an image which might have faces from disk and displaying it
 	cout << "Reading image from disk" << endl;
-	images.insert(make_pair("Image", readDisplay("data/with_mask/with_mask_1564.jpg", "Image")));
+	images.insert(make_pair("Image", readDisplay("../Images/with_mask/with_mask_1564.jpg", "Image")));
 
 	// Sending the image for pre-processing and receiving all modified images in the map object
 	cout << "Pre-processing" << endl;
@@ -143,7 +143,7 @@ int main()
 
 	// Sending the images for face detection and receiving the set of faces from the image
 	cout << "Face detection" << endl;
-	vector<Mat> cropped_faces = faceDetection(images, "Haarcascades/haarcascade_frontalface_alt.xml");
+	vector<Mat> cropped_faces = faceDetection(images, "../Haarcascades/haarcascade_frontalface_alt.xml");
 
 	// Exiting the program if no faces were detected
 	cout << "Exiting if no faces were detected" << endl;
