@@ -5,6 +5,7 @@
 
 // Import the necessary libraries for opencv and i/o
 #include <iostream>
+#include <vector>
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
@@ -23,7 +24,7 @@ using namespace cv;
 // Pre-condition:  The program expects the arguments to be a string and an image
 // Post-condition: The image is displayed in a window with the window name passed to the function and then the window will be destroyed
 void display(const string& WINNAME, const Mat& IMG, const int SCALE = 1) {
-	namedWindow(WINNAME, WINDOW_NORMAL);
+	namedWindow(WINNAME, WINDOW_AUTOSIZE);
 	resizeWindow(WINNAME, IMG.cols / SCALE, IMG.rows / SCALE);
 	imshow(WINNAME, IMG);
 	waitKey(0);
@@ -55,43 +56,50 @@ Mat readDisplay(const string &path, const string& winname) {
 // Post-condition:
 int main()
 {
-	// Reading kitten images from disk and displaying it
-	cout << "Reading images from disk" << endl;
-	Mat face = readDisplay("Images/with_mask_1564.jpg", "face");
+	// Reading an image which might have faces from disk and displaying it
+	cout << "Reading image from disk" << endl;
+	Mat image = readDisplay("Images/with_mask_1564.jpg", "Image");
 
 	// Converting the image to grayscale
-	Mat face_gray;
-	cvtColor(face, face_gray, COLOR_BGR2GRAY);
-	display("Grayscale", face_gray);
+	Mat image_gray;
+	cvtColor(image, image_gray, COLOR_BGR2GRAY);
+	display("Grayscale", image_gray);
 
 	// Equalizing the histogram of the grayscale image to normalize brightness and increase contrast
-	Mat face_gray_eq;
-	equalizeHist(face_gray, face_gray_eq);
-	display("Equalized Histogram", face_gray_eq);
+	Mat image_gray_eq;
+	equalizeHist(image_gray, image_gray_eq);
+	display("Equalized Histogram", image_gray_eq);
 
 	// Blurring the image using a Gaussian Kernel to smoothen the image
-	Mat face_gray_eq_blur;
-	GaussianBlur(face_gray_eq, face_gray_eq_blur, Size(5,5), 0);
-	display("Smoothened Image", face_gray_eq_blur);
+	Mat image_gray_eq_blur;
+	int kwidth = 5, kheight = 5;
+	GaussianBlur(image_gray_eq, image_gray_eq_blur, Size(kwidth,kheight), 0);
+	display("Smoothened Image", image_gray_eq_blur);
 
 	// Loading the face cascades
 	CascadeClassifier face_cascade;
-	if( !face_cascade.load( "Haarcascades/haarcascade_frontalface_alt.xml" ) )
-	{
+	String filename = "Haarcascades/haarcascade_frontalface_alt.xml";
+	if(!face_cascade.load(filename)) {
 		cout << "Error loading face cascade\n";
 		return -1;
 	};
 
-	// Detecting face in the image
+	// Detecting faces in the image
 	std::vector<Rect> faces;
-	face_cascade.detectMultiScale(face_gray_eq_blur, faces);
-
+	vector<Mat> cropped_faces;
+	face_cascade.detectMultiScale(image_gray_eq_blur, faces);
 	for (auto & i : faces) {
-		Point center(i.x + i.width / 2, i.y + i.height / 2);
-		ellipse(face, center, Size(i.width / 2, i.height / 2), 0, 0, 360, Scalar(255, 0, 255), 4);
+		Point pt1(i.x, i.y);
+		Point pt2(i.x + i.width, i.y + i.height);
+		rectangle(image, pt1, pt2, Scalar(255, 0, 255), 4);
+		cropped_faces.push_back(image(Range(i.y, i.y + i.height), Range(i.x, i.x + i.width)));
 	}
+	display("Faces detected", image);
 
-	display("Face detected", face);
+	// Displaying cropped faces from the original image
+	for (auto & i: cropped_faces) {
+		display("Cropped Face", i);
+	}
 
 	return 0;
 }
