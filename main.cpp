@@ -2,6 +2,10 @@
 // Description:
 // Assumptions:
 // Authors: Harpreet Kour, Saurav Jayakumar, Utkarsh Darbari
+// Future improvements:
+//      Separate functions to different files
+//		Implement the rest of the mask detection methods
+//      Try other pre-processing steps to improve detection
 
 // Import the necessary libraries for opencv and i/o
 #include <iostream>
@@ -54,11 +58,13 @@ Mat readDisplay(const string &path, const string& winname) {
 	return img;
 }
 
-// The pre-processing function
-// Parameters:
-// Pre-condition:
-// Post-condition:
-// Future improvements: setup a default constructor for the map to avoid temp variables
+// The pre-processing function accepts an image, converts it to grayscale, equalizes the histogram, and smoothens it
+// Parameters: A map variable to hold the images from various pre-processing stages
+// Pre-condition: A valid map variable is passed to the arguement with the original image at key = "Image"
+// Post-condition: The map variable will be updated with the various images
+// Future improvements:
+//      Set up a default constructor for the map to avoid temp variables
+//      Experiment with the blurring parameters
 void preProcessing (map<string, Mat> &images) {
 	// Converting the image to grayscale
 	cout << "Converting the image to grayscale" << endl;
@@ -81,10 +87,10 @@ void preProcessing (map<string, Mat> &images) {
 	display("Smoothened Image", images.at("Grayscale_EQ_Blur"));
 }
 
-// The face detection function
-// Parameters:
-// Pre-condition:
-// Post-condition:
+// The face detection function loads a face haar cascade file and uses it to detect faces from an image
+// Parameters: A map variable with the pre-processes images and location of the haar cascade xml file
+// Pre-condition: The map variable should contain valid jpg images with the expected keys and the filename should point to the correct cascade xml file
+// Post-condition: The faces detected in the image are first displayed and then returned to the main function as a vector of matrices
 // Future improvements: Include cropped images in the map
 vector<Mat> faceDetection (map<string, Mat> &images, const String& cascade_filename) {
 	// Loading the face cascades
@@ -118,10 +124,10 @@ vector<Mat> faceDetection (map<string, Mat> &images, const String& cascade_filen
 	return cropped_faces;
 }
 
-// The main function
-// Parameters:
-// Pre-condition:
-// Post-condition:
+// The main function loads an image, pre-processes it, detects face, models the skin color, detects the oronasal region, and detects mask
+// Parameters: N/A
+// Pre-condition: Expects a valid jpg image and a valid haar cascade face xml file at the specified locations
+// Post-condition: Returns whether the faces in the image, if any, wore a mask or not
 int main()
 {
 	map<string, Mat> images;
@@ -130,10 +136,19 @@ int main()
 	images.insert(make_pair("Image", readDisplay("Images/with_mask_1564.jpg", "Image")));
 
 	// Sending the image for pre-processing and receiving all modified images in the map object
+	cout << "Pre-processing" << endl;
 	preProcessing(images);
 
 	// Sending the images for face detection and receiving the set of faces from the image
+	cout << "Face detection" << endl;
 	vector<Mat> cropped_faces = faceDetection(images, "Haarcascades/haarcascade_frontalface_alt.xml");
+
+	// Exiting the program if no faces were detected
+	cout << "Exiting if no faces were detected" << endl;
+	if (cropped_faces.empty()) {
+		cout << "Didn't detect any faces in the image" << endl;
+		return 0;
+	}
 
 	return 0;
 }
