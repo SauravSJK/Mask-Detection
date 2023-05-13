@@ -6,6 +6,8 @@
 //      Separate functions to different files
 //		Implement the rest of the mask detection methods
 //      Try other pre-processing steps to improve detection
+//      Update program to read multiple random images
+//      Suppress display function calls
 
 // Import the necessary libraries for opencv and i/o
 #include <iostream>
@@ -133,7 +135,7 @@ int main()
 	map<string, Mat> images;
 	// Reading an image which might have faces from disk and displaying it
 	cout << "Reading image from disk" << endl;
-	images.insert(make_pair("Image", readDisplay("Images/with_mask_1564.jpg", "Image")));
+	images.insert(make_pair("Image", readDisplay("data/with_mask/with_mask_1564.jpg", "Image")));
 
 	// Sending the image for pre-processing and receiving all modified images in the map object
 	cout << "Pre-processing" << endl;
