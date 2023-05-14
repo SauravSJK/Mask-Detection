@@ -233,6 +233,15 @@ int main()
 	cout << "Reading image from disk" << endl;
 	images.insert(make_pair("Image", readDisplay("Images/with_mask/with_mask_1564.jpg", "Image")));
 
+	// Example of not detecting a face
+	// images.insert(make_pair("Image", readDisplay("Images/without_mask/without_mask_3732.jpg", "Image")));
+
+	// Example of not detecting an eye
+	// images.insert(make_pair("Image", readDisplay("Images/without_mask/without_mask_3731.jpg", "Image")));
+
+	// Example of multiple unaligned faces in an image
+	// images.insert(make_pair("Image", readDisplay("Images/without_mask/without_mask_3502.jpg", "Image")));
+
 	// Passing the image for pre-processing and receiving all modified images in the map object
 	cout << "Pre-processing" << endl;
 	preProcessing(images);
