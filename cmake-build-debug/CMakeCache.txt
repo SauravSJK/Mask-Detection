@@ -210,6 +210,12 @@ CMAKE_STRIP:FILEPATH=/Library/Developer/CommandLineTools/usr/bin/strip
 // Studio IDE projects all commands are done without /nologo.
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 
+//Build directory
+EXECUTABLE_OUTPUT_PATH:PATH=/Users/sauravsjk/Documents/UW Bothell/Course Work/CSS 587 - Advanced Topics In Computer Vision/Project/Mask-Detection
+
+//Build directory
+LIBRARY_OUTPUT_PATH:PATH=/Users/sauravsjk/Documents/UW Bothell/Course Work/CSS 587 - Advanced Topics In Computer Vision/Project/Mask-Detection
+
 //The directory containing a CMake configuration file for OpenCV.
 OpenCV_DIR:PATH=/opt/homebrew/lib/cmake/opencv4
 

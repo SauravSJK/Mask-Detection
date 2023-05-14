@@ -1102,6 +1102,18 @@
 			"value" : "FALSE"
 		},
 		{
+			"name" : "EXECUTABLE_OUTPUT_PATH",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Build directory"
+				}
+			],
+			"type" : "PATH",
+			"value" : "/Users/sauravsjk/Documents/UW Bothell/Course Work/CSS 587 - Advanced Topics In Computer Vision/Project/Mask-Detection"
+		},
+		{
 			"name" : "FIND_PACKAGE_MESSAGE_DETAILS_OpenCV",
 			"properties" : 
 			[
@@ -1112,6 +1124,18 @@
 			],
 			"type" : "INTERNAL",
 			"value" : "[/opt/homebrew/Cellar/opencv/4.7.0_2][v4.7.0()]"
+		},
+		{
+			"name" : "LIBRARY_OUTPUT_PATH",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Build directory"
+				}
+			],
+			"type" : "PATH",
+			"value" : "/Users/sauravsjk/Documents/UW Bothell/Course Work/CSS 587 - Advanced Topics In Computer Vision/Project/Mask-Detection"
 		},
 		{
 			"name" : "OpenCV_DIR",
