@@ -169,6 +169,59 @@ vector<Mat> skinColorSegmentation (const vector<Mat>& cropped_faces) {
 	return otsu_cr_faces;
 }
 
+// The eye detection function loads a eye haar cascade file and uses it to detect eyes from a face image
+// Parameters: A vector of matrices with the cropped face images and location of the haar cascade xml file
+// Pre-condition: The vector contains valid matrices with cropped face images and the filename should point to the correct cascade xml file
+// Post-condition: The eyes detected in each of the faces are first displayed and then the coordinates of the bounding boxes are returned
+// Future improvements: Include eyes box images in the map
+vector<vector<Rect>> eyeDetection (vector<Mat> cropped_faces, const String& CASCADE_FILENAME) {
+	// Loading the face cascades
+	cout << "Loading the face cascades" << endl;
+	CascadeClassifier eye_cascade;
+	if(!eye_cascade.load(CASCADE_FILENAME)) {
+		cout << "Error loading face cascade\n";
+		exit(0);
+	};
+
+	vector<vector<Rect>> eye_boxes;
+	for (auto &face: cropped_faces) {
+		// Detecting eyes in the image
+		cout << "Detecting eyes in the image" << endl;
+		vector<Rect> eyes;
+		const Scalar COLOR = Scalar(255, 0, 255);
+		const int THICKNESS = 1;
+		eye_cascade.detectMultiScale(face, eyes);
+		eye_boxes.push_back(eyes);
+
+		for (auto & i : eyes) {
+			Point pt1(i.x - 1, i.y - 1);
+			Point pt2(i.x + i.width + 1, i.y + i.height + 1);
+			rectangle(face, pt1, pt2, COLOR, THICKNESS);
+		}
+
+		display("Eyes detected", face);
+	}
+
+	return eye_boxes;
+}
+
+// The mask detection function accepts the Otsu thresholded Cr components and eye bounding boxes for mask detection
+// by comparing skin areas between eye part and mouth part
+// Parameters: A vector of matrices with the Otsu thresholded Cr components and vector of eye bounding boxes
+// Pre-condition: The vectors contains valid data and correspond to the same face in the same order
+// Post-condition: The function outputs whether the person in the image is wearing a mask or not
+// Future improvements: Split the if statement
+void maskDetection(vector<Mat> otsu_cr_faces, vector<vector<Rect>> eye_boxes) {
+	for (int i = 0; i < otsu_cr_faces.size(); i++) {
+		if (countNonZero(otsu_cr_faces.at(i)(Range(min(eye_boxes.at(i).at(0).y, eye_boxes.at(i).at(1).y), max(eye_boxes.at(i).at(0).y + eye_boxes.at(i).at(0).height, eye_boxes.at(i).at(1).y + eye_boxes.at(i).at(1).height)), Range(min(eye_boxes.at(i).at(0).x, eye_boxes.at(i).at(1).x), max(eye_boxes.at(i).at(0).x + eye_boxes.at(i).at(0).width, eye_boxes.at(i).at(1).x + eye_boxes.at(i).at(1).width)))) > 1.2 * countNonZero(otsu_cr_faces.at(i)(Range(min(eye_boxes.at(i).at(0).y + eye_boxes.at(i).at(0).height, eye_boxes.at(i).at(1).y + eye_boxes.at(i).at(1).height), max(min(eye_boxes.at(i).at(0).y + 3 * eye_boxes.at(i).at(0).height, otsu_cr_faces.at(i).rows), min(eye_boxes.at(i).at(1).y + 3 * eye_boxes.at(i).at(1).height, otsu_cr_faces.at(i).rows))), Range(min(eye_boxes.at(i).at(0).x, eye_boxes.at(i).at(1).x), max(eye_boxes.at(i).at(0).x + eye_boxes.at(i).at(0).width, eye_boxes.at(i).at(1).x + eye_boxes.at(i).at(1).width))))) {
+			cout << "Mask detected" << endl;
+		}
+		else {
+			cout << "Mask not detected" << endl;
+		}
+	}
+}
+
 // The main function loads an image, pre-processes it, detects face, models the skin color, detects the oronasal region, and detects mask
 // Parameters: N/A
 // Pre-condition: Expects a valid jpg image and a valid haar cascade face xml file at the specified locations
@@ -180,11 +233,11 @@ int main()
 	cout << "Reading image from disk" << endl;
 	images.insert(make_pair("Image", readDisplay("Images/with_mask/with_mask_1564.jpg", "Image")));
 
-	// Sending the image for pre-processing and receiving all modified images in the map object
+	// Passing the image for pre-processing and receiving all modified images in the map object
 	cout << "Pre-processing" << endl;
 	preProcessing(images);
 
-	// Sending the images for face detection and receiving the set of faces from the image
+	// Passing the images for face detection and receiving the set of faces from the image
 	cout << "Face detection" << endl;
 	vector<Mat> cropped_faces = faceDetection(images, "Haarcascades/haarcascade_frontalface_alt.xml");
 
@@ -195,9 +248,17 @@ int main()
 		return(0);
 	}
 
-	// Sending the cropped face images for skin color segmentation and receiving Otsu thresholded Cr components of them
+	// Passing the cropped face images for skin color segmentation and receiving Otsu thresholded Cr components of them
 	cout << "Skin color segmentation" << endl;
 	vector<Mat> otsu_cr_faces = skinColorSegmentation(cropped_faces);
+
+	// Passing the cropped images for eye detection and receiving the bounding boxes for the eyes
+	cout << "Eye detection" << endl;
+	vector<vector<Rect>> eye_boxes = eyeDetection(cropped_faces, "Haarcascades/haarcascade_eye_tree_eyeglasses.xml");
+
+	// Passing the Otsu thresholded Cr components and the eye bounding boxes for mask detection
+	cout << "Mask detection" << endl;
+	maskDetection(otsu_cr_faces, eye_boxes);
 
 	return 0;
 }
