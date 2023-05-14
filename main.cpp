@@ -8,7 +8,7 @@
 //      Try other pre-processing steps to improve detection
 //      Update program to read multiple random images or Implement a GUI to select images or use video inputs
 //      Suppress display function calls or display images in parallel
-//
+//      Add all images and vectors to the map variable
 
 // Import the necessary libraries for opencv and i/o
 #include <iostream>
@@ -63,7 +63,7 @@ Mat readDisplay(const string &PATH, const string& WINNAME) {
 
 // The pre-processing function accepts an image, converts it to grayscale, equalizes the histogram, and smoothens it
 // Parameters: A map variable to hold the images from various pre-processing stages
-// Pre-condition: A valid map variable is passed to the arguement with the original image at key = "Image"
+// Pre-condition: A valid map variable is passed to the argument with the original image at key = "Image"
 // Post-condition: The map variable will be updated with the various images
 // Future improvements:
 //      Set up a default constructor for the map to avoid temp variables
@@ -91,8 +91,8 @@ void preProcessing (map<string, Mat> &images) {
 }
 
 // The face detection function loads a face haar cascade file and uses it to detect faces from an image
-// Parameters: A map variable with the pre-processes images and location of the haar cascade xml file
-// Pre-condition: The map variable should contain valid jpg images with the expected keys and the filename should point to the correct cascade xml file
+// Parameters: A map variable with the pre-processed images and location of the haar cascade xml file
+// Pre-condition: The map variable should contain valid image matrices with the expected keys and the filename should point to the correct cascade xml file
 // Post-condition: The faces detected in the image are first displayed and then returned to the main function as a vector of matrices
 // Future improvements: Include cropped images in the map
 vector<Mat> faceDetection (map<string, Mat> &images, const String& CASCADE_FILENAME) {
@@ -108,11 +108,14 @@ vector<Mat> faceDetection (map<string, Mat> &images, const String& CASCADE_FILEN
 	cout << "Detecting faces in the image" << endl;
 	vector<Rect> faces;
 	vector<Mat> cropped_faces;
+	const Scalar COLOR = Scalar(255, 0, 255);
+	const int THICKNESS = 1;
 	face_cascade.detectMultiScale(images.at("Grayscale_EQ_Blur"), faces);
+
 	for (auto & i : faces) {
-		Point pt1(i.x, i.y);
-		Point pt2(i.x + i.width, i.y + i.height);
-		rectangle(images.at("Image"), pt1, pt2, Scalar(255, 0, 255), 4);
+		Point pt1(i.x - 1, i.y - 1);
+		Point pt2(i.x + i.width + 1, i.y + i.height + 1);
+		rectangle(images.at("Image"), pt1, pt2, COLOR, THICKNESS);
 		cropped_faces.push_back(images.at("Image")(Range(i.y, i.y + i.height), Range(i.x, i.x + i.width)));
 	}
 
@@ -125,6 +128,45 @@ vector<Mat> faceDetection (map<string, Mat> &images, const String& CASCADE_FILEN
 	}
 
 	return cropped_faces;
+}
+
+// The skin color segmentation takes in a set of cropped faces, converts them to YCrCb color space, and uses the Cr component for Otsu thresholding
+// Parameters: A vector of matrices with cropped face images
+// Pre-condition: The vector contains valid matrices with cropped face images
+// Post-condition: Images are displayed at various stages of the segmentation and the final output is returned to the caller
+// Future improvements: Include the vectors in the map
+vector<Mat> skinColorSegmentation (const vector<Mat>& cropped_faces) {
+	// Converting cropped faces to YCrCb color space
+	cout << "Converting cropped faces to YCrCb color space" << endl;
+	vector<Mat> cropped_faces_ycrcb;
+	for (auto &face: cropped_faces) {
+		Mat face_ycrcb;
+		cvtColor(face, face_ycrcb, COLOR_BGR2YCrCb);
+		cropped_faces_ycrcb.push_back(face_ycrcb);
+		display("YCrCb Faces", face_ycrcb);
+	}
+
+	// Extracting Cr component of the image
+	cout << "Extracting Cr component of the image" << endl;
+	vector<Mat> cr_faces;
+	for (auto &face: cropped_faces_ycrcb) {
+		Mat channels[3];
+		split(face, channels);
+		cr_faces.push_back(channels[1]);
+		display("Cr component of the face image", channels[1]);
+	}
+
+	// Applying Otsu thresholding for skin color segmentation
+	cout << "Applying Otsu thresholding for skin color segmentation" << endl;
+	vector<Mat> otsu_cr_faces;
+	for (auto &face: cr_faces) {
+		Mat otsu;
+		threshold(cr_faces[0], otsu, 0, 255, THRESH_OTSU);
+		otsu_cr_faces.push_back(otsu);
+		display("Otsu Thresholding", otsu);
+	}
+
+	return otsu_cr_faces;
 }
 
 // The main function loads an image, pre-processes it, detects face, models the skin color, detects the oronasal region, and detects mask
@@ -150,8 +192,12 @@ int main()
 	cout << "Exiting if no faces were detected" << endl;
 	if (cropped_faces.empty()) {
 		cout << "Didn't detect any faces in the image" << endl;
-		return 0;
+		return(0);
 	}
+
+	// Sending the cropped face images for skin color segmentation and receiving Otsu thresholded Cr components of them
+	cout << "Skin color segmentation" << endl;
+	vector<Mat> otsu_cr_faces = skinColorSegmentation(cropped_faces);
 
 	return 0;
 }
