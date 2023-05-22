@@ -10,10 +10,10 @@
 #include <iostream>
 #include <vector>
 #include <opencv2/core.hpp>
-#include "helper.h"
-#include "preprocessing.h"
-#include "facedetection.h"
-#include "postprocessing.h"
+#include "headers/helper.h"
+#include "headers/preprocessing.h"
+#include "headers/facedetection.h"
+#include "headers/postprocessing.h"
 
 // Declaring the namespaces that would be used throughout the program
 // We can use 2 namespaces as long as there aren't any conflicts
