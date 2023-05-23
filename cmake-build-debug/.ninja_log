@@ -1,23 +1,5 @@
 # ninja log v5
 641	688	1684026060634905118	Mask-Detection	2470e898f97f0120
-6	616	1684786924863715498	CMakeFiles/Mask-Detection.dir/main.cpp.o	9633dfd5e12892fe
-0	6	0	clean	3c8e6cc385ee00ba
-616	656	1684786924906113909	/Users/sauravsjk/Documents/UW Bothell/Course Work/CSS 587 - Advanced Topics In Computer Vision/Project/Mask-Detection/Mask-Detection	86b2d604a8a124cb
-1	80	1684794798247069356	build.ninja	a37c79910e19f60
-0	9	0	clean	3c8e6cc385ee00ba
-6	717	1684797186302664777	CMakeFiles/Mask-Detection.dir/main.cpp.o	9633dfd5e12892fe
-717	771	1684797186360982913	/Users/sauravsjk/Documents/UW Bothell/Course Work/CSS 587 - Advanced Topics In Computer Vision/Project/Mask-Detection/Mask-Detection	86b2d604a8a124cb
-8	763	1684797832738608233	CMakeFiles/Mask-Detection.dir/main.cpp.o	9633dfd5e12892fe
-763	814	1684797832792845834	/Users/sauravsjk/Documents/UW Bothell/Course Work/CSS 587 - Advanced Topics In Computer Vision/Project/Mask-Detection/Mask-Detection	86b2d604a8a124cb
-7	640	1684797867800350015	CMakeFiles/Mask-Detection.dir/main.cpp.o	9633dfd5e12892fe
-640	689	1684797867852482320	/Users/sauravsjk/Documents/UW Bothell/Course Work/CSS 587 - Advanced Topics In Computer Vision/Project/Mask-Detection/Mask-Detection	86b2d604a8a124cb
-14	770	1684801989085465155	CMakeFiles/Mask-Detection.dir/main.cpp.o	9633dfd5e12892fe
-770	821	1684801989141227164	/Users/sauravsjk/Documents/UW Bothell/Course Work/CSS 587 - Advanced Topics In Computer Vision/Project/Mask-Detection/Mask-Detection	86b2d604a8a124cb
-9	746	1684803317293333665	CMakeFiles/Mask-Detection.dir/main.cpp.o	9633dfd5e12892fe
-746	800	1684803317350177783	/Users/sauravsjk/Documents/UW Bothell/Course Work/CSS 587 - Advanced Topics In Computer Vision/Project/Mask-Detection/Mask-Detection	86b2d604a8a124cb
-6	587	1684803843287711378	CMakeFiles/Mask-Detection.dir/main.cpp.o	9633dfd5e12892fe
-587	633	1684803843335679854	/Users/sauravsjk/Documents/UW Bothell/Course Work/CSS 587 - Advanced Topics In Computer Vision/Project/Mask-Detection/Mask-Detection	86b2d604a8a124cb
-6	597	1684803918460788496	CMakeFiles/Mask-Detection.dir/main.cpp.o	9633dfd5e12892fe
-597	637	1684803918504430856	/Users/sauravsjk/Documents/UW Bothell/Course Work/CSS 587 - Advanced Topics In Computer Vision/Project/Mask-Detection/Mask-Detection	86b2d604a8a124cb
 6	716	1684804130707046845	CMakeFiles/Mask-Detection.dir/main.cpp.o	9633dfd5e12892fe
-717	765	1684804130759024021	/Users/sauravsjk/Documents/UW Bothell/Course Work/CSS 587 - Advanced Topics In Computer Vision/Project/Mask-Detection/Mask-Detection	86b2d604a8a124cb
+0	9	0	clean	3c8e6cc385ee00ba
+1	80	1684805159207418232	build.ninja	a37c79910e19f60
