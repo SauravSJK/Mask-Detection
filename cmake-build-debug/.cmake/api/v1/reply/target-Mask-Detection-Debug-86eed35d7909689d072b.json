@@ -412,7 +412,8 @@
 				1,
 				2,
 				3,
-				4
+				4,
+				5
 			]
 		}
 	],
@@ -426,22 +427,27 @@
 		},
 		{
 			"backtrace" : 2,
-			"path" : "helper.h",
+			"path" : "headers/helper.h",
 			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 2,
-			"path" : "preprocessing.h",
+			"path" : "headers/preprocessing.h",
 			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 2,
-			"path" : "facedetection.h",
+			"path" : "headers/facedetection.h",
 			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 2,
-			"path" : "postprocessing.h",
+			"path" : "headers/postprocessing.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 2,
+			"path" : "headers/maskdetection.h",
 			"sourceGroupIndex" : 1
 		}
 	],

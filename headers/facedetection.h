@@ -5,50 +5,52 @@
 #ifndef MAIN_FACEDETECTION_H
 #define MAIN_FACEDETECTION_H
 
+// Import the necessary libraries for opencv and i/o
 #include <iostream>
 #include <vector>
+#include <string>
 #include <opencv2/core.hpp>
 #include <opencv2/objdetect.hpp>
-#include "helper.h"
+#include "headers/helper.h"
 
+// Declaring the namespaces that would be used throughout the program
+// We can use 2 namespaces as long as there aren't any conflicts
 using namespace std;
 using namespace cv;
 
-// The face detection function loads a face haar cascade file and uses it to detect faces from an image
-// Parameters: A map variable with the pre-processed images and location of the haar cascade xml file
-// Pre-condition: The map variable should contain valid image matrices with the expected keys and the filename should point to the correct cascade xml file
-// Post-condition: The faces detected in the image are first displayed and then returned to the main function as a vector of matrices
-vector<Mat> faceDetection (const Mat& image, const Mat& pre_processed_image, const String& CASCADE_FILENAME, const bool DEBUG_MODE) {
-	// Loading the face cascades
-	cout << "Loading the face cascades" << endl;
-	CascadeClassifier face_cascade;
-	if(!face_cascade.load(CASCADE_FILENAME)) {
-		cout << "Error loading face cascade\n";
-		exit(0);
-	}
+// The face detection function uses a face cascade classifier to detect faces from an image
+// Parameters:
+//          IMAGE:               The original image used for mask detection
+//          PRE_PROCESSED_IMAGE: The pre-processed image
+//          face_cascade:        Cascade classifier object for face detection
+//          DEBUG_MODE:          To control the image display outputs
+// Pre-condition: The images and cascade classifier objects should be valid
+// Post-condition: The faces detected in the image are first displayed if running in debug mode and then returned to the caller function as a vector of matrices
+vector<Mat> faceDetection (const Mat& IMAGE, const Mat& PRE_PROCESSED_IMAGE, CascadeClassifier face_cascade, const bool DEBUG_MODE) {
 
 	// Detecting faces in the image
-	cout << "Detecting faces in the image" << endl;
+	print("Detecting faces in the image", DEBUG_MODE);
 	vector<Rect> faces;
 	vector<Mat> cropped_faces;
 	const Scalar COLOR = Scalar(255, 0, 255);
 	const int THICKNESS = 1;
-	face_cascade.detectMultiScale(pre_processed_image, faces);
+	face_cascade.detectMultiScale(PRE_PROCESSED_IMAGE, faces);
 
 	for (auto & i : faces) {
 		Point pt1(i.x - 1, i.y - 1);
 		Point pt2(i.x + i.width + 1, i.y + i.height + 1);
-		rectangle(image, pt1, pt2, COLOR, THICKNESS);
-		cropped_faces.push_back(image(Range(i.y, i.y + i.height), Range(i.x, i.x + i.width)));
+		rectangle(IMAGE, pt1, pt2, COLOR, THICKNESS);
+		cropped_faces.push_back(IMAGE(Range(i.y, i.y + i.height), Range(i.x, i.x + i.width)));
 	}
+	print("Faces count: " + to_string(faces.size()), DEBUG_MODE);
 
+	display("Faces detected", IMAGE, DEBUG_MODE);
+
+	// Displaying cropped faces from the original image
+	print("Displaying cropped faces from the original image", DEBUG_MODE);
 	if (DEBUG_MODE) {
-		display("Faces detected", image);
-
-		// Displaying cropped faces from the original image
-		cout << "Displaying cropped faces from the original image" << endl;
 		for (auto &face: cropped_faces) {
-			display("Cropped Face", face);
+			display("Cropped Face", face, DEBUG_MODE);
 		}
 	}
 

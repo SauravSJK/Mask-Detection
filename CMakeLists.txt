@@ -47,8 +47,8 @@ include_directories("${CMAKE_CURRENT_LIST_DIR}")
 # Since there are a lot of examples I'm going to use a macro to simplify this
 # CMakeLists.txt file. However, usually you will create only one executable in
 # your cmake projects and use the syntax shown above.
-macro(add_example name header1 header2 header3 header4)
-    add_executable(Mask-Detection ${name}.cpp ${header1}.h ${header2}.h ${header3}.h ${header4}.h)
+macro(add_example name header1 header2 header3 header4 header5)
+    add_executable(Mask-Detection ${name}.cpp ${header1}.h ${header2}.h ${header3}.h ${header4}.h ${header5}.h)
     target_link_libraries(Mask-Detection ${OpenCV_LIBS} )
 endmacro()
 # if an example requires GUI, call this macro to check DLIB_NO_GUI_SUPPORT to include or exclude
@@ -59,4 +59,4 @@ macro(add_gui_example name)
         add_example(${name})
     endif()
 endmacro()
-add_example(main helper preprocessing facedetection postprocessing) #Give the executable name without the cpp. E.g, if its main.cpp, give main
+add_example(main headers/helper headers/preprocessing headers/facedetection headers/postprocessing headers/maskdetection) #Give the executable name without the cpp. E.g, if its main.cpp, give main
