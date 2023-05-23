@@ -2,7 +2,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "/Users/sauravsjk/Documents/UW Bothell/Course Work/CSS 587 - Advanced Topics In Computer Vision/Project/Mask-Detection/Mask-Detection"
+			"path" : "/Users/sauravsjk/Documents/UW Bothell/Course Work/CSS 587 - Advanced Topics In Computer Vision/Mask-Detection/Mask-Detection"
 		}
 	],
 	"backtrace" : 2,
@@ -66,7 +66,7 @@
 			[
 				{
 					"backtrace" : 4,
-					"path" : "/Users/sauravsjk/Documents/UW Bothell/Course Work/CSS 587 - Advanced Topics In Computer Vision/Project/Mask-Detection"
+					"path" : "/Users/sauravsjk/Documents/UW Bothell/Course Work/CSS 587 - Advanced Topics In Computer Vision/Mask-Detection"
 				},
 				{
 					"backtrace" : 3,

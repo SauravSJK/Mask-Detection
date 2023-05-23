@@ -27,7 +27,8 @@ const bool DEBUG_MODE = false;
 int main()
 {
 	vector<int> counts = {0, 0, 0, 0};
-	const string DIRECTORY_PATH = "Images/without_mask/";
+	int ground_truth_masks = 0, ground_truth_no_masks = 0;
+	const string DIRECTORY_PATH = "Images/";
 	const string FACE_HAAR_CASCADE_FILENAME = "Haarcascades/haarcascade_frontalface_default.xml";
 	const string FACE_LBP_CASCADE_FILENAME = "LBPcascades/lbpcascade_frontalface_improved.xml";
 	const string LEFT_CASCADE_FILENAME = "Haarcascades/haarcascade_lefteye_2splits.xml";
@@ -48,6 +49,12 @@ int main()
 
 	// Running the mask detection algorithm through each of the image file
 	for (const auto & FILE_PATH : FILE_PATHS){
+		if (FILE_PATH.substr(7, 9) == "with_mask") {
+			ground_truth_masks += 1;
+		}
+		else {
+			ground_truth_no_masks += 1;
+		}
 		const vector<int> TEMP_COUNTS = maskDetection(FILE_PATH, FACE_HAAR_CASCADE, FACE_LBP_CASCADE, LEFT_EYE_CASCADE, RIGHT_EYE_CASCADE, EYE_GLASS_CASCADE, DEBUG_MODE);
 		counts.at(0) += TEMP_COUNTS.at(0);
 		counts.at(1) += TEMP_COUNTS.at(1);
@@ -60,7 +67,8 @@ int main()
 	cout << "Total Count of Non_Masked faces: " << counts.at(2) << endl;
 	cout << "Total Count of skipped Faces: " << counts.at(0) << endl;
 	cout << "Total Count of skipped Images: " << counts.at(3) << endl;
-	cout << "Count of all images: " << FILE_PATHS.size() << endl;
+	cout << "Count of all masked images: " << ground_truth_masks << endl;
+	cout << "Count of all non-masked images: " << ground_truth_no_masks << endl;
 
 	return 0;
 }

@@ -78,10 +78,10 @@ vector<string> getFileNames(const string& DIRECTORY_PATH, const bool DEBUG_MODE)
 	vector<string> file_names;
 	// Getting the filenames from the directory
 	print("Getting the filenames from the directory", DEBUG_MODE);
-	for (const auto& entry : std::__fs::filesystem::directory_iterator(DIRECTORY_PATH)) {
-		if (entry.is_regular_file()) {
-			string file_name = entry.path().filename().string();
-			file_names.push_back(DIRECTORY_PATH + file_name);
+	for (const auto& entry : __fs::filesystem::recursive_directory_iterator(DIRECTORY_PATH)) {
+		if (entry.is_regular_file() && entry.path().extension() == ".jpg") {
+			string file_name = entry.path().string();
+			file_names.push_back(file_name);
 		}
 	}
 
