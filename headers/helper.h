@@ -68,27 +68,38 @@ void print(const string &TEXT, const bool DEBUG_MODE) {
 	}
 }
 
-// Fetches the list of image filenames from the directory
+// Fetches the list of jpg filenames recursively from the directory and extracts the relevant information from the file name
 // Parameters:
 //          DIRECTORY_PATH: Path to the directory containing the files
 //          DEBUG_MODE:     To control the image display outputs
 // Pre-condition:   The program expects a valid path for the directory and a boolean for debug mode
-// Post-condition:  Returns the list of file_names from the directory
-vector<string> getFileNames(const string& DIRECTORY_PATH, const bool DEBUG_MODE) {
-	vector<string> file_names;
+// Post-condition:  Returns the list of jpg file_paths from the directory and data about the file type, image id, and number of faces
+vector<vector<string>> getFileNames(const string& DIRECTORY_PATH, const bool DEBUG_MODE) {
+	vector<vector<string>> files;
 	// Getting the filenames from the directory
 	print("Getting the filenames from the directory", DEBUG_MODE);
 	for (const auto& entry : __fs::filesystem::recursive_directory_iterator(DIRECTORY_PATH)) {
+		vector<string> file_names;
 		if (entry.is_regular_file() && entry.path().extension() == ".jpg") {
 			string file_name = entry.path().string();
 			file_names.push_back(file_name);
+			if (file_name.substr(file_name.find('/') + 1, file_name.rfind('/') - file_name.find('/') - 1) == "withmask") {
+				file_names.emplace_back("With Mask");
+			}
+			else {
+				file_names.emplace_back("Without Mask");
+			}
+			auto first_underscore = file_name.find('_');
+			auto second_underscore = file_name.find('_', first_underscore + 1);
+			auto third_underscore = file_name.find('_', second_underscore + 1);
+			auto fourth_underscore = file_name.rfind('_');
+			auto dot = file_name.rfind('.');
+			file_names.push_back(file_name.substr(second_underscore + 1, third_underscore - second_underscore - 1));
+			file_names.push_back(file_name.substr(fourth_underscore + 1, dot - fourth_underscore - 1));
+			files.push_back(file_names);
 		}
 	}
-
-	// Sorting the string vector lexicographically
-	print("Sorting the string vector lexicographically", DEBUG_MODE);
-	sort(file_names.begin(), file_names.end());
-	return file_names;
+	return files;
 }
 
 // Loads the specified cascade file and returns it
