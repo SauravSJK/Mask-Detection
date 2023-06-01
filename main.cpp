@@ -31,7 +31,7 @@ int main()
 	vector<int> masked_counts = {0, 0, 0, 0}, not_masked_counts = {0, 0, 0, 0};
 	vector<int> TEMP_COUNTS;
 	int ground_truth_masks = 0, ground_truth_no_masks = 0;
-	const string DIRECTORY_PATH = "Dataset/";
+	const string DIRECTORY_PATH = "Dataset";
 	const string FACE_HAAR_CASCADE_FILENAME = "Haarcascades/haarcascade_frontalface_default.xml";
 	const string FACE_LBP_CASCADE_FILENAME = "LBPcascades/lbpcascade_frontalface_improved.xml";
 	const string LEFT_CASCADE_FILENAME = "Haarcascades/haarcascade_lefteye_2splits.xml";
@@ -64,20 +64,20 @@ int main()
 
 		if (FILE_TYPE == "With Mask") {
 			ground_truth_masks += faces;
-			TEMP_COUNTS = maskDetection(FILE_PATH, FACE_HAAR_CASCADE, FACE_LBP_CASCADE, LEFT_EYE_CASCADE, RIGHT_EYE_CASCADE, EYE_GLASS_CASCADE, DEBUG_MODE);
+			TEMP_COUNTS = maskDetection(FILE_PATH, faces, FACE_HAAR_CASCADE, FACE_LBP_CASCADE, LEFT_EYE_CASCADE, RIGHT_EYE_CASCADE, EYE_GLASS_CASCADE, DEBUG_MODE);
 			masked_counts.at(0) += TEMP_COUNTS.at(0);
 			masked_counts.at(1) += TEMP_COUNTS.at(1);
 			masked_counts.at(2) += TEMP_COUNTS.at(2);
-			masked_counts.at(3) += TEMP_COUNTS.at(3) * faces;
-			output << FILE_TYPE << "," << image_id << "," << faces << "," << TEMP_COUNTS.at(3) << "," << TEMP_COUNTS.at(0) << "," << TEMP_COUNTS.at(1) << "," << TEMP_COUNTS.at(2) << "\n";
+			masked_counts.at(3) += TEMP_COUNTS.at(3);
+			output << FILE_TYPE << "," << image_id << "," << faces << "," << TEMP_COUNTS.at(3) * faces << "," << TEMP_COUNTS.at(0) << "," << TEMP_COUNTS.at(1) << "," << TEMP_COUNTS.at(2) << "\n";
 		}
 		else {
 			ground_truth_no_masks += faces;
-			TEMP_COUNTS = maskDetection(FILE_PATH, FACE_HAAR_CASCADE, FACE_LBP_CASCADE, LEFT_EYE_CASCADE, RIGHT_EYE_CASCADE, EYE_GLASS_CASCADE, DEBUG_MODE);
+			TEMP_COUNTS = maskDetection(FILE_PATH, faces, FACE_HAAR_CASCADE, FACE_LBP_CASCADE, LEFT_EYE_CASCADE, RIGHT_EYE_CASCADE, EYE_GLASS_CASCADE, DEBUG_MODE);
 			not_masked_counts.at(0) += TEMP_COUNTS.at(0);
 			not_masked_counts.at(1) += TEMP_COUNTS.at(1);
 			not_masked_counts.at(2) += TEMP_COUNTS.at(2);
-			not_masked_counts.at(3) += TEMP_COUNTS.at(3) * faces;
+			not_masked_counts.at(3) += TEMP_COUNTS.at(3);
 			output << FILE_TYPE << "," << image_id << "," << faces << "," << TEMP_COUNTS.at(3) << "," << TEMP_COUNTS.at(0) << "," << TEMP_COUNTS.at(1) << "," << TEMP_COUNTS.at(2) << "\n";
 		}
 	}

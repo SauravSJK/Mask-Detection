@@ -1,7 +1,7 @@
 # cmake needs this line
 cmake_minimum_required(VERSION 3.17)
 # Enable C++11
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR} CACHE PATH "Build directory" FORCE)
 set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR} CACHE PATH "Build directory" FORCE)
@@ -49,7 +49,7 @@ include_directories("${CMAKE_CURRENT_LIST_DIR}")
 # your cmake projects and use the syntax shown above.
 macro(add_example name header1 header2 header3 header4 header5)
     add_executable(Mask-Detection ${name}.cpp ${header1}.h ${header2}.h ${header3}.h ${header4}.h ${header5}.h)
-    target_link_libraries(Mask-Detection ${OpenCV_LIBS} )
+    target_link_libraries(Mask-Detection ${OpenCV_LIBS})
 endmacro()
 # if an example requires GUI, call this macro to check DLIB_NO_GUI_SUPPORT to include or exclude
 macro(add_gui_example name)

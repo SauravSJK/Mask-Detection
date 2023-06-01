@@ -30,7 +30,7 @@ using namespace cv;
 //          DEBUG_MODE:        To control the image display outputs
 // Pre-condition:  The program expects the arguments to be valid and image to the available at the specified path
 // Post-condition: The counts of faces detected, masks detected, etc., are returned
-vector<int> maskDetection(const string& FILEPATH, const CascadeClassifier& FACE_HAAR_CASCADE, const CascadeClassifier& FACE_LBP_CASCADE, const CascadeClassifier& LEFT_EYE_CASCADE, const CascadeClassifier& RIGHT_EYE_CASCADE, const CascadeClassifier& EYE_GLASS_CASCADE, const bool DEBUG_MODE) {
+vector<int> maskDetection(const string& FILEPATH, const int faces, const CascadeClassifier& FACE_HAAR_CASCADE, const CascadeClassifier& FACE_LBP_CASCADE, const CascadeClassifier& LEFT_EYE_CASCADE, const CascadeClassifier& RIGHT_EYE_CASCADE, const CascadeClassifier& EYE_GLASS_CASCADE, const bool DEBUG_MODE) {
 
 	int images_skipped = 0;
 	vector<int> results = {0, 0, 0};
@@ -54,9 +54,10 @@ vector<int> maskDetection(const string& FILEPATH, const CascadeClassifier& FACE_
 		// Exiting if no faces were found by the LBP cascade classifier too
 		if (cropped_frontal_faces.empty()) {
 			print("Didn't detect any faces in the image", DEBUG_MODE);
-			images_skipped = 1;
+
 		}
 	}
+	images_skipped = faces - int(cropped_frontal_faces.size());
 	if (!cropped_frontal_faces.empty()) {
 		// Passing the cropped face images for skin color segmentation and receiving Otsu thresholded Cr components of them
 		print("Skin color segmentation", DEBUG_MODE);

@@ -78,25 +78,26 @@ vector<vector<string>> getFileNames(const string& DIRECTORY_PATH, const bool DEB
 	vector<vector<string>> files;
 	// Getting the filenames from the directory
 	print("Getting the filenames from the directory", DEBUG_MODE);
-	for (const auto& entry : __fs::filesystem::recursive_directory_iterator(DIRECTORY_PATH)) {
-		vector<string> file_names;
+	for (const auto& entry: filesystem::recursive_directory_iterator(DIRECTORY_PATH)) {
+		vector<string> file_data;
 		if (entry.is_regular_file() && entry.path().extension() == ".jpg") {
-			string file_name = entry.path().string();
-			file_names.push_back(file_name);
-			if (file_name.substr(file_name.find('/') + 1, file_name.rfind('/') - file_name.find('/') - 1) == "withmask") {
-				file_names.emplace_back("With Mask");
+			string file_path = entry.path().string();
+			string file_name = entry.path().filename().string();
+			file_data.push_back(file_path);
+			if (file_name.substr(0, file_name.find('_')) == "with") {
+				file_data.emplace_back("With Mask");
 			}
 			else {
-				file_names.emplace_back("Without Mask");
+				file_data.emplace_back("Without Mask");
 			}
 			auto first_underscore = file_name.find('_');
 			auto second_underscore = file_name.find('_', first_underscore + 1);
 			auto third_underscore = file_name.find('_', second_underscore + 1);
 			auto fourth_underscore = file_name.rfind('_');
 			auto dot = file_name.rfind('.');
-			file_names.push_back(file_name.substr(second_underscore + 1, third_underscore - second_underscore - 1));
-			file_names.push_back(file_name.substr(fourth_underscore + 1, dot - fourth_underscore - 1));
-			files.push_back(file_names);
+			file_data.push_back(file_name.substr(second_underscore + 1, third_underscore - second_underscore - 1));
+			file_data.push_back(file_name.substr(fourth_underscore + 1, dot - fourth_underscore - 1));
+			files.push_back(file_data);
 		}
 	}
 	return files;
